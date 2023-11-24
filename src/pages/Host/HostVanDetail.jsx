@@ -1,21 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react"
-import { Link, useParams, Outlet, NavLink } from "react-router-dom"
+
+import { Link, Outlet, NavLink, useLoaderData } from "react-router-dom"
+import { getHostVans } from "../../api"
+import { requireAuth } from "../../utils"
+
+export async function loader({ params }) {
+    await requireAuth()
+    return getHostVans(params.id)
+}
 
 export default function HostVanDetail() {
 
-    const params = useParams()
-    const [currentVan, setCurrentVan] = useState(null)
-
-    useEffect(() => {
-        fetch(`/api/host/vans/${params.id}`)
-            .then(res => res.json())
-            .then(data => setCurrentVan(data.vans))
-    },[])
-
-    if (!currentVan) {
-        return <h1>Loading...</h1>
-    }
+    const currentVan = useLoaderData()
 
     const activeStyles = {
         fontWeight: "bold",
