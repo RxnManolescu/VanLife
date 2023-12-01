@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { Link, Outlet, NavLink, useLoaderData } from "react-router-dom"
-import { getHostVans } from "../../api"
+// import { getHostVans } from "../../api"  //function using server.js
+import { getVan } from "../../api" //function using Firebase
 import { requireAuth } from "../../utils"
 
-export async function loader({ params }) {
-    await requireAuth()
-    return getHostVans(params.id)
+export async function loader({ params, request }) {
+    await requireAuth(request)
+    // return getHostVans(params.id) //function using server.js
+    return getVan(params.id) // function using Firebase
 }
 
 export default function HostVanDetail() {
